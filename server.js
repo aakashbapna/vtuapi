@@ -279,3 +279,12 @@ app.tcp_server_send = function (location,data) {
 
 }
 tcp_server.listen(8123);
+
+var http_server = require('http');
+ 
+var http_server = http.createServer(function (req, res) {
+  res.writeHead(200, { "Content-Type": "text/plain" })
+  res.end("Hello world\n");
+});
+ 
+http_server.listen(process.env.PORT || 8001);

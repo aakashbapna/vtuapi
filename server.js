@@ -34,7 +34,7 @@ app.get('/result/:usn', function(req, res){
         //res.send(body)
       	var window = jsdom.jsdom(body).createWindow();
       	console.log("created dom window");
-      	jsdom.jQueryify(window, __dirname+'/jquery-1.3.2.js', function (window, $) {
+      	jsdom.jQueryify(window, __dirname+'/jquery.js', function (window, $) {
       	  console.log("jqueryfied!")
 		  var $t = $('table[bgcolor="#ffffff"] tr td[width=513]').eq(0)
 		  json.name = $t.find("b").eq(0).text().replace(/[(].*[)]/,"").trim().toProperCase()

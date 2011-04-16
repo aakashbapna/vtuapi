@@ -175,7 +175,7 @@ function increment_usn(usn) {
 	var match = /([\d]{3})/.exec(usn)
 	if(!match)
 		return
-	var next = (parseInt(match[1])+ 1).toString()
+	var next = (parseInt(match[1],10)+ 1).toString()
 	return usn.slice(0,usn.length-next.length)+next;
 }
 

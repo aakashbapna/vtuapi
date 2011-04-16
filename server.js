@@ -1,7 +1,10 @@
-var app = require('express').createServer();
+var app = require('express').createServer(),
 //var scraper = require('scraper');
-var request = require("request");
-var jsdom = require('jsdom');
+ request = require("request"),
+ jsdom = require('jsdom'),
+ process = require("process");
+  
+
 /*jsdom.defaultDocumentFeatures = {
    FetchExternalResources   : false, 
    ProcessExternalResources : false,
@@ -14,9 +17,32 @@ app.get('/', function(req, res){
     res.send('Hello from vtu api');
 });
 
-app.get('/result/:usn', function(req, res){
-	var usn = req.params.usn
+app.get('/results.json', function(req, res){
+	var usn = req.query.usn
 	console.log("request for usn:"+usn);
+    res.contentType('json');
+    vtu_result(usn,function(json){
+    	res.send(json);
+    })
+
+   
+    
+	/*scraper(request_params, function(err, $) {
+			 	if (err) {
+			 		sys.log(err)	
+			 	} else {
+					 var result_html = $('html').html()
+					 res.send(result_html);
+			 	}
+			}
+	);*/
+
+    
+});
+
+app.listen(process.argv[2]||80)
+
+function vtu_result(usn,callback) {
 	request_params = {
        'uri': 'http://results.vtu.ac.in/vitavi.php',
        'headers': {
@@ -26,9 +52,10 @@ app.get('/result/:usn', function(req, res){
        "method" : "post",
       "body":"rid="+usn+"&submit=SUBMIT"
     }
-   var json = {} 
-   request(request_params
-     ,function (error, response, body) {
+	var json = {}
+	json.usn = usn.toUpperCase() 
+    request(request_params
+     , function (error, response, body) {
       if(response.statusCode == 200){
         body = body.replace(/[<]script .*[>][\s\S]*[<][/]script[>]/gi,"")
         //res.send(body)
@@ -38,6 +65,12 @@ app.get('/result/:usn', function(req, res){
       	  console.log("jqueryfied!")
 		  var $t = $('table[bgcolor="#ffffff"] tr td[width="513"]').eq(0)
 		  json.name = $t.find("b").eq(0).text().replace(/[(].*[)]/,"").trim().toProperCase()
+		  if(json.name==""||!json.name) {
+		  	  delete json.name
+		      json.error = "not yet declared for this usn";
+		  	  callback(json)
+		  	  return
+		  	}
 		  json.results = []
 		  var result_tables =  $t.find("table");
 		  for( var i=0;i<result_tables.length;i=i+3 )
@@ -66,30 +99,19 @@ app.get('/result/:usn', function(req, res){
 		  	json.results.push(result_obj);
 		  }
 		  //console.log(json)
-		  res.send(json);
+		  callback(json);
 		});
         
       } else {
-        console.log('error: '+ response.statusCode);
-        console.log(body);
+        json.error = 'VTU server status code '+ response.statusCode;
+        //console.log('error: '+ response.statusCode);
+        //console.log(body);
+        callback(json);
       }
     }
   )
-    
-	/*scraper(request_params, function(err, $) {
-			 	if (err) {
-			 		sys.log(err)	
-			 	} else {
-					 var result_html = $('html').html()
-					 res.send(result_html);
-			 	}
-			}
-	);*/
 
-    
-});
-
-app.listen(80)
+}
 
 String.prototype.toProperCase = function() {
   return this.toLowerCase().replace(/^(.)|\s(.)/g, 

@@ -27,7 +27,7 @@ app.get('/results.json', function(req, res){
 	if(req.query.usn.indexOf(":")>0) {
 	    var starting_usn = req.query.usn.split(":",2)[0]
 		var total_required = parseInt(req.query.usn.split(":",2)[1])
-		total_required = total_required>50 ?  50 : total_required
+		total_required = total_required>100 ?  100 : total_required
 		 
 		for(var i=0;i<total_required;i++) 
 		{
@@ -43,12 +43,12 @@ app.get('/results.json', function(req, res){
 		if(req.query.__debug)
 		{
 			json.loadavg = os.loadavg()
-			json.freemem = os.freemem()/1024*1024
+			json.freemem = os.freemem()/1024
 		}
 			res.send(json);
 		})
     } else {
-    usn_arr = usn_arr.slice(0,50);
+    usn_arr = usn_arr.slice(0,100);
     var actions = usn_arr.map(function (usn) {
 					  return vtu_result_multi(usn);
 					});

@@ -15,7 +15,7 @@ var app = require('express').createServer(),
 var redis = redis_pkg.createClient();
 
 app.get('/', function(req, res){
-    res.send('Hello from vtu api');
+    res.sendfile('readme.txt');
 });
 
 app.get('/results.json', function(req, res){

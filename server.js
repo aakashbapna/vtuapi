@@ -89,7 +89,7 @@ app.get('/result/:usn', function(req, res){
     
 });
 
-app.listen(8080)
+app.listen(80)
 
 String.prototype.toProperCase = function() {
   return this.toLowerCase().replace(/^(.)|\s(.)/g, 

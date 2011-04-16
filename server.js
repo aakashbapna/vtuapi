@@ -4,4 +4,4 @@ app.get('/', function(req, res){
     res.send('Hello from vtu api');
 });
 
-app.listen(3000);
+app.listen(80)

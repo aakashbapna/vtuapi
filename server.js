@@ -2,9 +2,7 @@ var app = require('express').createServer(),
 //var scraper = require('scraper');
  request = require("request"),
  jsdom = require('jsdom'),
- process = require("process");
-  
-
+ Do = require("./do");
 /*jsdom.defaultDocumentFeatures = {
    FetchExternalResources   : false, 
    ProcessExternalResources : false,
@@ -18,12 +16,30 @@ app.get('/', function(req, res){
 });
 
 app.get('/results.json', function(req, res){
-	var usn = req.query.usn
-	console.log("request for usn:"+usn);
+	
+	if(!req.query.usn){
+		res.send("usn parameter missing",400);
+	}
+	
+	var usn_arr = req.query.usn.split(",")
+	console.log("request for usn:"+ usn_arr);
     res.contentType('json');
-    vtu_result(usn,function(json){
-    	res.send(json);
-    })
+    if(usn_arr.length == 1) {
+		vtu_result(usn_arr[0],function(json){
+			res.send(json);
+		})
+    } else {
+    
+    var actions = usn_arr.map(function (usn) {
+					  return vtu_result_multi(usn);
+					});
+	Do.parallel(actions)(function(results){
+			//console.log(results);
+			res.send(results);
+		})
+    
+    }
+   
 
    
     
@@ -41,6 +57,14 @@ app.get('/results.json', function(req, res){
 });
 
 app.listen(process.argv[2]||80)
+
+function vtu_result_multi(usn) {
+	return function (callback,errback) {
+		vtu_result(usn,callback);
+	}
+		
+
+}
 
 function vtu_result(usn,callback) {
 	request_params = {

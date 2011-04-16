@@ -1,4 +1,4 @@
-var app = express.createServer();
+var app = require('express').createServer();
 
 app.get('/', function(req, res){
     res.send('Hello from vtu api');

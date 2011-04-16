@@ -113,7 +113,7 @@ function vtu_result(usn,callback) {
 				  json.name = $t.find("b").eq(0).text().replace(/[(].*[)]/,"").trim().toProperCase()
 				  if(json.name==""||!json.name) {
 				  	  delete json.name
-					  json.error = "not yet declared for this usn";
+					  json.error = "not yet declared for this usn or its not a valid usn itself.";
 				  	  callback(json)
 				  	  return
 				  	}

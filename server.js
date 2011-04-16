@@ -36,7 +36,7 @@ app.get('/result/:usn', function(req, res){
       	console.log("created dom window");
       	jsdom.jQueryify(window, __dirname+'/jquery.js', function (window, $) {
       	  console.log("jqueryfied!")
-		  var $t = $('table[bgcolor="#ffffff"] tr td[width=513]').eq(0)
+		  var $t = $('table[bgcolor="#ffffff"] tr td[width="513"]').eq(0)
 		  json.name = $t.find("b").eq(0).text().replace(/[(].*[)]/,"").trim().toProperCase()
 		  json.results = []
 		  var result_tables =  $t.find("table");
@@ -89,7 +89,7 @@ app.get('/result/:usn', function(req, res){
     
 });
 
-app.listen(80)
+app.listen(8080)
 
 String.prototype.toProperCase = function() {
   return this.toLowerCase().replace(/^(.)|\s(.)/g, 

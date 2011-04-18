@@ -41,5 +41,6 @@ List of cool mashups using vtu api:
 DISCLAIMLER - 
 	* This service uses data that is already public, we just apply transformations to it and make it available in a better way. 
 	* We are not responsible for wrong results reported.
+	* in BETA right now.
 	* The service may break anytime. (yes.sadly.)
 	

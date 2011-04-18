@@ -25,6 +25,8 @@ app.get("/results.json", function(req,res,next){
 			next();
 		} else  {
 		  	redis.decr("global:rate_limit:hour:"+req.connection.remoteAddress, function(err, request_remaining) {
+		  	    if (err)
+		  	    	console.log("error in redis read"+err);
 				if (request_remaining<0) {
 				    console.log("Rate limited IP:"+req.connection.remoteAddress);
 				    res.header("X-RateLimit-remaining", 0)
@@ -40,13 +42,13 @@ app.get("/results.json", function(req,res,next){
 				 }
 			   }) ; 
 		
-		function setRateLimitTTL(callback){
-			redis.ttl("global:rate_limit:hour:"+req.connection.remoteAddress, function(err,ttl){
-						 	res.header("X-RateLimit-reset",ttl)
-							callback(ttl);	 		
-						 })
+			function setRateLimitTTL(callback){
+				redis.ttl("global:rate_limit:hour:"+req.connection.remoteAddress, function(err,ttl){
+							 	res.header("X-RateLimit-reset",ttl)
+								callback(ttl);	 		
+							 })
 		
-			}
+				}
 		}
 	})
 

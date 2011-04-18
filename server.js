@@ -26,6 +26,7 @@ app.get("/results.json", function(req,res,next){
 		} else  {
 		  	redis.decr("global:rate_limit:hour:"+req.connection.remoteAddress, function(err, request_remaining) {
 				if (request_remaining<0) {
+				    console.log("Rate limited IP:"+req.connection.remoteAddress);
 				    res.header("X-RateLimit-remaining", 0)
 				    setRateLimitTTL(function(ttl){
 				    	res.send("API rate limiting in effect, please make request after "+Math.ceil(ttl/60)+" mins",400)

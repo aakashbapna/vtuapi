@@ -105,9 +105,9 @@ app.get('/results.json', function(req, res){
 
 app.listen(process.argv[2]||80)
 
-function vtu_result_multi(usn) {
+function vtu_result_multi(usn,reload_cache) {
 	return function (callback,errback) {
-		vtu_result(usn,callback);
+		vtu_result(usn,reload_cache,callback);
 	}
 		
 

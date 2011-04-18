@@ -19,13 +19,13 @@ app.get("/results.json", function(req,res,next){
 	redis.exists("global:rate_limit:hour:"+req.connection.remoteAddress,function(err,reply){
 		if (reply == 0 ) {
 			//first request from this ip in this hour.
-			redis.set("global:rate_limit:hour:"+req.connection.remoteAddress,MAX_REQUEST_HOUR - 1) // hourly rate limit hence expire = 86400 secs
-			redis.expire("global:rate_limit:hour:"+req.connection.remoteAddress,3600)
+			redis.set("global:rate_limit:hour:"+req.connection.remoteAddress,"199") // hourly rate limit hence expire = 86400 secs
+			redis.expire("global:rate_limit:hour:"+req.connection.remoteAddress,"3600")
 			res.header("X-RateLimit-remaining",MAX_REQUEST_HOUR - 1)
 			res.header("X-RateLimit-reset",3600);
 			next();
 		} else  {
-		  	redis.incr("global:rate_limit:hour:"+req.connection.remoteAddress, function(err, request_remaining) {
+		  	redis.decr("global:rate_limit:hour:"+req.connection.remoteAddress, function(err, request_remaining) {
 		  	    if (err)
 		  	    	console.log("error in redis read"+err);
 				if (request_remaining<0) {

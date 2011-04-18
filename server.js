@@ -15,7 +15,7 @@ app.get('/', function(req, res){
 });
 
 //check for rate limiting in this handler
-app.get("/results.json", function(req,res,next){
+/*app.get("/results.json", function(req,res,next){
 	redis.exists("global:rate_limit:hour:"+req.connection.remoteAddress,function(err,reply){
 		if (reply == 0 ) {
 			//first request from this ip in this hour.
@@ -53,7 +53,7 @@ app.get("/results.json", function(req,res,next){
 		}
 	})
 
-})
+}) */
 
 //main api request handler
 app.get('/results.json', function(req, res){

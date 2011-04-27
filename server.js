@@ -2,7 +2,6 @@ var app = require('express').createServer(),
 //var scraper = require('scraper');
  request = require("request"),
  jsdom = require('jsdom'),
- os = require("os"),
  Do = require("./do"),
  redis_pkg = require("redis");
 
@@ -173,6 +172,8 @@ function vtu_result(usn, reload_cache, callback) {
 				  //console.log(json)
 				  callback(json);
 				  redis.setex("results:"+json.usn, 3*30*86400, JSON.stringify(json)) // cache results for 3 months
+				  delete window; // to prevent out of memory!
+				  delete $;
 				});
 				
 			  } else {

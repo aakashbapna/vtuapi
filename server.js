@@ -103,6 +103,7 @@ app.get('/results.json', function(req, res){
 
 app.listen(process.argv[2]||80)
 
+//wraper for Do library style callbacks
 function vtu_result_multi(usn,reload_cache) {
 	return function (callback,errback) {
 		vtu_result(usn,reload_cache,callback);
@@ -110,7 +111,7 @@ function vtu_result_multi(usn,reload_cache) {
 		
 
 }
-
+//function to make request to vtu and scrap html
 function vtu_result(usn, reload_cache, callback) {
 	redis.get("results:"+usn.toUpperCase(),function(err,json){
 		if(err || !json || reload_cache) {
@@ -197,7 +198,7 @@ function vtu_result(usn, reload_cache, callback) {
 }
 
 
-
+//increment and return usn
 function increment_usn(usn) {
 	var match = /([\d]{3})/.exec(usn)
 	if(!match)

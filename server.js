@@ -9,7 +9,7 @@ var MAX_REQUEST_HOUR = 200;
 var redis = redis_pkg.createClient();
 
 app.get('/', function(req, res){
-    res.sendfile('readme.txt');
+    res.send('hello there api is working');
 });
 
 //check for rate limiting in this handler

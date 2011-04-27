@@ -1,5 +1,4 @@
 var app = require('express').createServer(),
-//var scraper = require('scraper');
  request = require("request"),
  jsdom = require('jsdom'),
  Do = require("./do"),

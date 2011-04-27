@@ -1,5 +1,5 @@
 ##Running the code
-Install latest Redis(http://redis.io) server and start it.
+Install latest [Redis](http://redis.io) server and start it.
 
 Install node dependencies via npm
 	
@@ -22,14 +22,18 @@ Make a HTTP GET request to url: http://vtuapi.aakash.org/results.json?usn=1pe07i
 
 ###Multiple fetch in single api call -
 * Give up to 50 USNs seperated by comma to fetch in parallel!
+
   > eg- http://vtuapi.aakash.org/results.json?usn=1pe07is000,1pe07cs000,1pe07ec000
 		
 * For you all lazy people- automatically increment USN and fetch results, use as:
+
   > eg- http://vtuapi.aakash.org/results.json?usn=1pe07is000:50
-  >	fetches results of ALL USN from 1pe07is000 to 1pe07is050 !!
+
+  >	fetches results of 50 USNs from 1pe07is000 uptill 1pe07is050 !!
 
 ###Bypass cache and fetch fresh result from VTU server -
 * Add a reload=true parameter to the query string.
+
   > eg- http://vtuapi.aakash.org/results.json?usn=1pe07is000&reload=true
 		
 ###Rate Limiting -
